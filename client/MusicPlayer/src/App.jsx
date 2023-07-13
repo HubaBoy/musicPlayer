@@ -10,7 +10,7 @@ function App() {
       <div className='top-nav'></div>
       <div className='middle-nav'>
         {songs.map((song, index) => (
-          <Card key={index} index={index} setSource={setSource} />
+          <Card key={index} song={song} setSource={setSource} />
         ))}
       </div>
       <div className='bottom-nav'>
@@ -20,14 +20,14 @@ function App() {
   );
 }
 
-function Card({ index, setSource }) {
+function Card({ song, setSource }) {
   function handleClick() {
-    setSource(songs[index]);
+    setSource(song.song);
   }
 
   return (
     <div className='card' onClick={handleClick}>
-      <p>jonny</p>
+      <p>{song.name}</p>
     </div>
   );
 }

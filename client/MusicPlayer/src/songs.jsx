@@ -10,7 +10,44 @@ import colapse from './pesni/Till i colapse.mp3';
 
 
 
-const songs = [RapGod, Leva10, Jiva, NOtAfraid, OldTownRoad, ShakeItoff, StariRani, TeAMO, colapse]
+//const songs = [RapGod, Leva10, Jiva, NOtAfraid, OldTownRoad, ShakeItoff, StariRani, TeAMO, colapse]
+const songs = [{
+    name: "RapGod",
+    song: RapGod
+},
+{
+    name: "10 leva",
+    song: Leva10
+},
+{
+    name: "jiva rana",
+    song: Jiva
+},
+{
+    name: "Not Afraid",
+    song: NOtAfraid
+},
+{
+    name: "Old Town Road",
+    song: OldTownRoad
+},
+{
+    name: "Shake it Of",
+    song: ShakeItoff
+},
+{
+    name: "Stari rani",
+    song: StariRani
+},
+{
+    name: "Te Amo",
+    song: TeAMO
+},
+{
+    name: "Till I colapse",
+    song: colapse
+}
+]
 const song = RapGod;
 
 
