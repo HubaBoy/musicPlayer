@@ -1,4 +1,3 @@
-import RapGod from './pesni/Rap god.mp3';
 import Leva10 from './pesni/10 leva davam.mp3';
 import Jiva from './pesni/Jiva rana.mp3';
 import NOtAfraid from './pesni/Not Afraid.mp3';
@@ -12,11 +11,7 @@ import image from './image.jpg'
 
 
 //const songs = [RapGod, Leva10, Jiva, NOtAfraid, OldTownRoad, ShakeItoff, StariRani, TeAMO, colapse]
-const songs = [{
-    name: "RapGod",
-    song: RapGod,
-    image: image
-},
+const songs = [
 {
     name: "10 leva",
     song: Leva10,
@@ -58,7 +53,7 @@ const songs = [{
     image: image
 }
 ]
-const song = RapGod;
+
 
 
 export default songs;

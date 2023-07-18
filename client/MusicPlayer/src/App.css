@@ -4,6 +4,11 @@
   background-color: black;
 }
 
+.top-nav p{
+  margin: 0;
+  color: blue;
+}
+
 .bottom-nav{
   position: fixed;
   z-index: 999;
@@ -38,7 +43,7 @@
   background-color: yellow;
   display: flex;
   flex-flow: row wrap;
-  padding-left: 2.7dvh;
+  padding-left: 5%;
   padding-bottom: 11dvh;
 }
 
