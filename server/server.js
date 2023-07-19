@@ -18,6 +18,30 @@ app.use(cors());
     res.send('hello world');
   });
 
+  app.get('/thumbnail/:id', (req, res) => {
+    const query = `SELECT thumbnail from songs where id = ${req.params.id}`
+    connection.query(query, (error, results) =>
+    {
+      if(error)
+      {
+        console.error(error)
+        res.status(500).send('Error retrieving the image');
+      }
+      else if(results.length === 0)
+      {
+        res.status(404).send('Thumbnail not found')
+      }
+      else{
+        const data = results[0].thumbnail
+
+        res.set('Content-Type', 'image/jpg');
+        res.set('Content-Length', data.length);
+
+        res.send(data);
+      }
+    })
+  })
+
 
 app.get('/songs', (req, res) => {
     const query = `select id, title, thumbnail from songs;`
@@ -37,8 +61,8 @@ app.get('/songs', (req, res) => {
 
   // Create a route to handle the request
   app.get('/song/:id', (req, res) => {
-    const query = `SELECT song FROM songs WHERE id = ${req.params.id}`;
-    connection.query(query, (error, results) => {
+    const query = `SELECT song FROM songs WHERE id = ?`;
+    connection.query(query, [req.params.id], (error, results) => {
       if (error) {
         console.error(error);
         res.status(500).send('Error retrieving song');
