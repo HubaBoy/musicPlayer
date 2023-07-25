@@ -3,6 +3,15 @@ import './App.css';
 import image from './image.jpg'
 
 function App() {
+  
+  return(
+    <Home />
+  )
+  ;
+}
+
+function Home()
+{
   const [source, setSource] = useState('0');
   const [thumb, setThumb] = useState('');
   const [title, setTitle] = useState('');
@@ -48,8 +57,9 @@ function App() {
         {source !== '0' && <audio src={source} controls />}
       </div>
     </>
-  );
+  )
 }
+
 
 function Card({ song, setSource, setThumb, setTitle }) {
   function handleClick() {
@@ -104,5 +114,6 @@ function Card({ song, setSource, setThumb, setTitle }) {
     </div>
   );
 }
+
 
 export default App;
