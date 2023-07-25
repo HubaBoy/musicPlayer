@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import image from './image.jpg'
 import styled from 'styled-components'
 import {createBrowserRouter,
   createRoutesFromElements,
