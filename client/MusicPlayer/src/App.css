@@ -2,11 +2,27 @@
   height: 10dvh;
   width: 100%;
   background-color: black;
+  margin: 0;
 }
 
-.top-nav p{
-  margin: 0;
-  color: blue;
+.upload-button{
+ position: absolute;
+  height: 8dvh;
+  width: 8dvh;
+  border-radius: 30%;
+  border: black;
+  background-color: white;
+  margin: 1dvh;
+  font-size: 9dvh;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.upload-button p{
+  
+  margin-top: -1dvh;
+  color: black;
+  font-style: bold;
 }
 
 .bottom-nav{

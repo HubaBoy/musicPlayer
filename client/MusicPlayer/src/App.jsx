@@ -1,21 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import image from './image.jpg'
+import styled from 'styled-components'
+import {createBrowserRouter,
+  createRoutesFromElements,
+   Route,
+    Link,
+     Outlet,
+      RouterProvider
+     } from 'react-router-dom'
 
 function App() {
-  
-  return(
-    <Home />
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      < >
+        <Route index element={<Home />}></Route>
+      </>
+    )
   )
-  ;
+return (
+  <>
+  <RouterProvider router={router}></RouterProvider>
+  </>
+)
 }
+
+const StyledLink = styled(Link)`
+text-decoration: none;
+/* Add any other custom styles you want to apply to the Link here */
+`;
 
 function Home()
 {
   const [source, setSource] = useState('0');
   const [thumb, setThumb] = useState('');
   const [title, setTitle] = useState('');
-  const [p, setP] = useState('');
   const [songs, setSongs] = useState([]);
 
   useEffect(() => {
@@ -35,7 +54,13 @@ function Home()
 
   return (
     <>
-      <div className='top-nav'></div>
+      <div className='top-nav'>
+        <StyledLink to='/data'>
+        <div className='upload-button'>
+            <p>+</p>
+        </div>
+        </StyledLink>
+      </div>
       <div className='middle-nav'>
         {songs.map((song, index) => (
           <Card
