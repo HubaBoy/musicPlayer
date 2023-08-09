@@ -3,6 +3,9 @@ app = express();
 cors = require('cors');
 mysql = require('mysql');
 multer = require('multer');
+const fs = require('fs');
+
+
 
 const connection =  mysql.createConnection({
     host: 'localhost',
@@ -13,39 +16,13 @@ const connection =  mysql.createConnection({
 
   connection.connect();
 
-app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
   app.get('/', (req, res) => {
     res.send('hello world');
   });
 
-  app.get('/thumbnail/:id', (req, res) => {
-    const query = `SELECT thumbnail from songs where id = ${req.params.id}`
-    connection.query(query, (error, results) =>
-    {
-      if(error)
-      {
-        console.error(error)
-        res.status(500).send('Error retrieving the image');
-      }
-      else if(results.length === 0)
-      {
-        res.status(404).send('Thumbnail not found')
-      }
-      else{
-        const data = results[0].thumbnail
-
-        res.set('Content-Type', 'image/jpg');
-        res.set('Content-Length', data.length);
-
-        res.send(data);
-      }
-    })
-  })
-
-
-app.get('/songs', (req, res) => {
+  app.get('/songs', (req, res) => {
     const query = `select id, title from songs;`
     connection.query(query, (error, results) => {
       if(error) {
@@ -61,6 +38,32 @@ app.get('/songs', (req, res) => {
     })
 })
 
+
+  app.get('/thumbnail/:id', (req, res) => {
+    const query = `SELECT thumbnail FROM songs WHERE id = ${req.params.id}`;
+    connection.query(query, (error, results) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send('Error retrieving the image');
+      } else if (results.length === 0) {
+        res.status(404).send('Thumbnail not found');
+      } else {
+        const thumbnailPath = results[0].thumbnail; 
+  
+        fs.readFile(thumbnailPath, (readError, thumbnailData) => {
+          if (readError) {
+            console.error(readError);
+            res.status(500).send('Error reading thumbnail file');
+          } else {
+            res.set('Content-Type', 'image/jpeg');
+            res.set('Content-Length', thumbnailData.length);
+            res.send(thumbnailData);
+          }
+        });
+      }
+    });
+  });
+
   // Create a route to handle the request
   app.get('/song/:id', (req, res) => {
     const query = `SELECT song FROM songs WHERE id = ?`;
@@ -71,34 +74,50 @@ app.get('/songs', (req, res) => {
       } else if (results.length === 0) {
         res.status(404).send('Song not found');
       } else {
-        const songData = results[0].song;
-  
-        // Set the appropriate response headers
-        res.set('Content-Type', 'audio/mpeg');
-        res.set('Content-Length', songData.length);
-  
-        // Send the song data as the response
-        res.send(songData);
+        const songPath = results[0].song;
+        fs.readFile(songPath, (readError, songData) =>{
+          if(readError)
+          {
+            console.error(readError);
+            res.status(500).send('Error retrieving song')
+          }
+          else{
+            res.set('Content-Type', 'audio/mpeg');
+            res.set('Content-Length', songData.length)
+            res.send(songData);
+          }
+        })
       }
     });
   });
   
-  const audioStorage = multer.memoryStorage();
-const audioUpload = multer({ storage: audioStorage });
+    const storageEngine = multer.diskStorage({
+      destination:(req,file, cb) =>{
+        if(file.fieldname === 'songInput')
+        {
+          cb(null, './uploads/songs')
+        }else if(file.fieldname === 'thumbnailInput')
+        {
+          cb(null, './uploads/thumbnails')
+        }
+        else{
+          cb(new Error('Invalid field name'));
+        }
+      },
+      filename: (req, file, cb) => {
+        cb(null, Date.now() + '-' + Math.round(Math.random() * 1E9));
+      }
+    })
 
-const imageStorage = multer.memoryStorage();
-const imageUpload = multer({ storage: imageStorage });
+    const upload = multer({ storage: storageEngine });
 
-const title = multer();
-
-app.post('/upload', title.none(), audioUpload.single('audio'), imageUpload.single('image'), (req,res) => {
-  const audioFile = req.file
-  const imageFile = req.file
-  const title = req.body
-
-
-  const insertQuery = `INSERT INTO songs (title, song, thumbnail) VALUES (?, ?, ?)`;
-  const insertValues = [title, audioFile,imageFile];
+app.post('/upload', upload.fields([{name: "songInput", maxCount:1}, {name: "thumbnailInput", maxCount:1} ]) , (req,res)=>{
+  console.log(req.files);
+  console.log(req.body.textInput)
+  const insertQuery = `INSERT INTO songs (title, song, thumbnail) VALUES (?, ?,?)`;
+  const insertValues = [req.body.textInput ,req.files['songInput'][0].path, req.files['thumbnailInput'][0].path];
+  
+  // Execute the INSERT statement
   connection.query(insertQuery, insertValues, (error, results) => {
     if (error) {
       console.error('Error inserting song:', error);
@@ -106,9 +125,15 @@ app.post('/upload', title.none(), audioUpload.single('audio'), imageUpload.singl
       console.log('Song inserted successfully');
     }
   
-    connection.end();
-  });
+  res.send('File upload success');
+})})
 
+
+app.get('/song', (req,res ) => {
+  const song = fs.readFileSync('./FRIENDS.mp3')
+  res.set('Content-Type', 'audio/mpeg');
+  res.set('Content-Length', song.length);
+  res.send(song)
 })
 
   // Start the server

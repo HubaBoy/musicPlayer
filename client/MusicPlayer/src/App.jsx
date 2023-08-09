@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import styled from 'styled-components'
+import image from './image.jpg'
 import {createBrowserRouter,
   createRoutesFromElements,
    Route,
@@ -14,6 +15,7 @@ function App() {
     createRoutesFromElements(
       < >
         <Route index element={<Home />}></Route>
+        <Route path='/upload' element={<Upload/>}></Route>
       </>
     )
   )
@@ -54,7 +56,7 @@ function Home()
   return (
     <>
       <div className='top-nav'>
-        <StyledLink to='/data'>
+        <StyledLink to='/upload'>
         <div className='upload-button'>
             <p>+</p>
         </div>
@@ -140,4 +142,61 @@ function Card({ song, setSource, setThumb, setTitle }) {
 }
 
 
-export default App;
+function Upload() {
+  const [textInput, setTextInput] = useState('');
+  const [songInput, setSongInput] = useState(null);
+  const [thumbnailInput, setThumbnailInput] = useState(null);
+
+  const handleTextChange = (event) => {
+    setTextInput(event.target.value);
+  };
+
+  const handleSongChange = (event) => {
+    setSongInput(event.target.files[0]);
+  };
+
+  const handleThumbnailChange = (event) => {
+    setThumbnailInput(event.target.files[0]);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    // Perform form data submission
+    const formData = new FormData();
+    formData.append('textInput', textInput);
+    formData.append('songInput', songInput);
+    formData.append('thumbnailInput', thumbnailInput);
+
+    try {
+      const response = await fetch('http://localhost:3000/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        console.log('Upload successful');
+        setTextInput('');
+        setSongInput(null);
+        setThumbnailInput(null);
+      } else {
+        console.error('Upload failed');
+      }
+    } catch (error) {
+      console.error('Error uploading:', error);
+    }
+  };
+
+  return (
+    <>
+      <form encType="multipart/form-data" action="/upload" method="post" onSubmit={handleSubmit}>
+        <input type="text" name="textInput" value={textInput} onChange={handleTextChange} />
+        <input type="file" name="songInput" accept="audio/*" onChange={handleSongChange} />
+        <input type="file" name="thumbnailInput" accept="image/*" onChange={handleThumbnailChange} />
+        <button type="submit">Submit</button>
+      </form>
+    </>
+  );
+}
+
+export default App
