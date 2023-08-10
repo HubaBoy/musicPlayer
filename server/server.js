@@ -136,7 +136,23 @@ app.get('/song', (req,res ) => {
   res.send(song)
 })
 
+app.post('/sing-up', (req,res) => {
+
+  const insertQuery = `INSERT INTO users (email, Pword, userName) VALUES (?, ?,?)`;
+  const insertValues = [req.body.email, req.body.password, req.body.userName];
+
+  connection.query(insertQuery, insertValues, (error, results) => {
+    if (error) {
+      console.error('Error inserting song:', error);
+    } else {
+      console.log('Song inserted successfully');
+    }
+
+    res.send('Sing-up is successful');
+
+})});
+
   // Start the server
   app.listen(3000, () => {
     console.log('Server is running on port 3000');
-  });
+  })
