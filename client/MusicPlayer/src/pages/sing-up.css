@@ -1,0 +1,47 @@
+
+.body{  
+    height: 100dvh;
+    width: 100%;
+    background-color: cadetblue;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.Form{
+    height: 85dvh;
+    width: 50%;
+    background-color: rgb(0, 108, 170);
+    border-radius: 5%;
+}
+
+input{
+    height: 4dvh;
+    width: 80%;
+    margin-left: 8%;
+    font-size: 3dvh;
+}
+
+h1{
+    margin-left: 6dvw;
+    margin-top: 5dvh;
+    font-size: 4dvh;
+}
+
+p{
+    position: absolute;
+    margin-left: 5dvw;
+    color: red;
+    margin-top: 6dvh;
+    font-size: 2dvh;
+    font-weight: bold;
+}
+
+button{
+    position: absolute;
+    bottom: 15dvh;
+    font-size: 8dvh;
+    color: white;
+    background-color: blue;
+    left: 40dvw;
+}
