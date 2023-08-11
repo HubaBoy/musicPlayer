@@ -28,7 +28,7 @@ h1{
     font-size: 4dvh;
 }
 
-p{
+form p{
     position: absolute;
     margin-left: 5dvw;
     color: red;
@@ -36,6 +36,7 @@ p{
     font-size: 2dvh;
     font-weight: bold;
 }
+
 
 button{
     position: absolute;

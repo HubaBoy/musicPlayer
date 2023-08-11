@@ -4,7 +4,7 @@ cors = require('cors');
 mysql = require('mysql');
 multer = require('multer');
 const fs = require('fs');
-
+bodyParser = require('body-parser')
 
 
 const connection =  mysql.createConnection({
@@ -16,7 +16,15 @@ const connection =  mysql.createConnection({
 
   connection.connect();
 
-app.use(cors());
+  app.use(bodyParser.json()); 
+  app.use(bodyParser.urlencoded({ extended: true })); 
+  
+  app.use(cors({
+    origin: '*', // Allow requests from this origin
+    methods: 'GET,POST', // Allow specified HTTP methods
+    optionsSuccessStatus: 200, // Return 200 for preflight requests
+    credentials: true, // Allow cookies and authorization headers
+  }));
 
   app.get('/', (req, res) => {
     res.send('hello world');
@@ -136,21 +144,27 @@ app.get('/song', (req,res ) => {
   res.send(song)
 })
 
-app.post('/sing-up', (req,res) => {
+  app.post('/sign-up', (req, res) => {
+    if (!req.body) {
+      return res.status(400).send('Bad Request');
+  }
+  else{
+    const insertQuery = `INSERT INTO users (email, Pword, userName) VALUES (?, ?, ?)`;
+    const email = req.body.email
+    console.log(email)
+    const insertValues = [email, req.body.password, req.body.userName];
 
-  const insertQuery = `INSERT INTO users (email, Pword, userName) VALUES (?, ?,?)`;
-  const insertValues = [req.body.email, req.body.password, req.body.userName];
-
-  connection.query(insertQuery, insertValues, (error, results) => {
-    if (error) {
-      console.error('Error inserting song:', error);
-    } else {
-      console.log('Song inserted successfully');
-    }
-
-    res.send('Sing-up is successful');
-
-})});
+    connection.query(insertQuery, insertValues, (error, results) => {
+      if (error) {
+        console.error('Error inserting user:', error);
+        res.status(500).send('Error signing up');
+      } else {
+        console.log('User inserted successfully');
+        res.status(200).send('Sign-up is successful');
+      }
+    });
+  }
+  });
 
   // Start the server
   app.listen(3000, () => {

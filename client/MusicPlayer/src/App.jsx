@@ -177,12 +177,12 @@ function Upload() {
       });
 
       if (response.ok) {
-        console.log('Upload successful');
+        alert('Upload successful');
         setTextInput('');
         setSongInput(null);
         setThumbnailInput(null);
       } else {
-        console.error('Upload failed');
+        alert('Upload failed');
       }
     } catch (error) {
       console.error('Error uploading:', error);
