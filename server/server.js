@@ -4,6 +4,7 @@ cors = require('cors');
 mysql = require('mysql');
 multer = require('multer');
 const fs = require('fs');
+const { connect } = require('http2');
 bodyParser = require('body-parser')
 
 
@@ -150,9 +151,7 @@ app.get('/song', (req,res ) => {
   }
   else{
     const insertQuery = `INSERT INTO users (email, Pword, userName) VALUES (?, ?, ?)`;
-    const email = req.body.email
-    console.log(email)
-    const insertValues = [email, req.body.password, req.body.userName];
+    const insertValues = [ req.body.email, req.body.password, req.body.userName];
 
     connection.query(insertQuery, insertValues, (error, results) => {
       if (error) {
@@ -165,6 +164,28 @@ app.get('/song', (req,res ) => {
     });
   }
   });
+
+  app.post('/log-in', (req,res)=>{
+    connection.query('select * from users where email = ?', req.body.email, (error, results) => {
+      if(error)
+      {
+        console.error('Error finding a user', error)
+        res.status(500).send('Error finding a user')
+      }else{
+        if(results === 0)
+        {
+          res.send(`User with email ${req.body.email} not found`)
+        }else if(results.password != req.body.password)
+        {
+          res.send('Password is not correct')
+        }
+        else{
+          res.send(results.id)
+        }
+      }
+      
+    })
+  })
 
   // Start the server
   app.listen(3000, () => {
