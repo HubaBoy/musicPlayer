@@ -27,7 +27,8 @@ function SignUp()
             });
             
             if (response.ok) {
-              console.log('Sign-up successful');
+              const errorMessage = await response.text(); // Get the error message from the response
+              alert('Sign-up failed:', errorMessage);
               setEmail('');
               setPassword('');
               setPassword2('');

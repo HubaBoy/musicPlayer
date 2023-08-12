@@ -1,7 +1,7 @@
 
 .body{  
     height: 100dvh;
-    width: 100%;
+    width: 100dvw;
     background-color: cadetblue;
     justify-content: center;
     align-items: center;
@@ -10,7 +10,7 @@
 
 .Form{
     height: 85dvh;
-    width: 50%;
+    width: 50dvw;
     background-color: rgb(0, 108, 170);
     border-radius: 5%;
 }
@@ -38,9 +38,9 @@ form p{
 }
 
 
-button{
+.Form button{
     position: absolute;
-    bottom: 15dvh;
+    bottom: 12dvh;
     font-size: 8dvh;
     color: white;
     background-color: blue;
