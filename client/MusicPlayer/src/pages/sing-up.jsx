@@ -49,7 +49,7 @@ function SignUp()
 
 
   return(
-    <div className='body'>
+    <div className='bod'>
         <div className='Form'>
             <form onSubmit={handleSubmit} action="/sign-up" method="post">
                 <h1>

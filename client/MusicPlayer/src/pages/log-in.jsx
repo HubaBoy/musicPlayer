@@ -8,8 +8,8 @@ const StyledLink = styled(Link)`
 position: absolute;
 align-self: center;
 font-size: 3dvh;
-margin-left: 10dvw;
-margin-top: 3dvh;
+margin-left: 0dvw;
+margin-top: 60dvh;
 /* Add any other custom styles you want to apply to the Link here */
 `;
 
@@ -48,7 +48,7 @@ function LogIn({userID ,setUserID}) {
     };
   
     return (
-        <>
+        <div className='bod'>
             <div className='log-in-Form'>
                 <form onSubmit={handleSubmit}>
                     <h1>Enter your email</h1>
@@ -59,7 +59,7 @@ function LogIn({userID ,setUserID}) {
                 </form>
             </div>
             <StyledLink to='/sing-up'>Don't have account?</StyledLink>
-        </>
+        </div>
     );
   }
   
