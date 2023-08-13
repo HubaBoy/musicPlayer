@@ -10,16 +10,19 @@ import {createBrowserRouter,
       RouterProvider
      } from 'react-router-dom'
 import SignUp from './pages/sing-up.jsx';
+import Cookies from 'js-cookie';
 import LogIn from './pages/log-in.jsx';
 
+
 function App() {
+  const [userID, setUserID] = useState(Cookies.get('userID') || 0);
   const router = createBrowserRouter(
     createRoutesFromElements(
       < >
-        <Route index element={<Home />}></Route>
-        <Route path='/upload' element={<Upload/>}></Route>
+        <Route index element={<Home userID={userID}/>}></Route>
+        <Route path='/upload' element={<Upload />}></Route>
         <Route path= 'sing-up' element={<SignUp/>}></Route>
-        <Route path= 'log-in' element={<LogIn/>}></Route>
+        <Route path= 'log-in' element={<LogIn userID={userID} setUserID={setUserID}/>}></Route>
       </>
     )
   )
@@ -35,12 +38,17 @@ text-decoration: none;
 /* Add any other custom styles you want to apply to the Link here */
 `;
 
-function Home()
+function Home({userID})
 {
   const [source, setSource] = useState('0');
   const [thumb, setThumb] = useState('');
   const [title, setTitle] = useState('');
   const [songs, setSongs] = useState([]);
+
+  if(userID===0)
+  {
+    window.location.href = '/log-in';
+  }
 
   useEffect(() => {
     fetch('http://localhost:3000/songs')
@@ -202,6 +210,7 @@ function Upload() {
     </>
   );
 }
+
 
 
 export default App

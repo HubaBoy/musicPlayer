@@ -29,10 +29,7 @@ function SignUp()
             if (response.ok) {
               const errorMessage = await response.text(); // Get the error message from the response
               alert('Sign-up failed:', errorMessage);
-              setEmail('');
-              setPassword('');
-              setPassword2('');
-              setUserName('');
+              window.location.href = '/log-in';
             } else {
               const errorMessage = await response.text(); // Get the error message from the response
               console.error('Sign-up failed:', errorMessage);

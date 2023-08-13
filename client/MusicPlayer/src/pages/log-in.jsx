@@ -1,10 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './log-in.css';
+import {Link} from 'react-router-dom'
+import Cookies from 'js-cookie';
+import styled from 'styled-components'
 
-function LogIn() {
+const StyledLink = styled(Link)`
+position: absolute;
+align-self: center;
+font-size: 3dvh;
+margin-left: 10dvw;
+margin-top: 3dvh;
+/* Add any other custom styles you want to apply to the Link here */
+`;
+
+function LogIn({userID ,setUserID}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
+    
+    useEffect(() => {
+        console.log('userID updated:', userID);
+      }, [userID]);
+      
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
@@ -16,9 +32,11 @@ function LogIn() {
                 body: JSON.stringify({ email, password })
             });
             if (response.ok) {
-                alert('You logged in successfully');
-                setEmail('');
-                setPassword('');
+                console.log('You logged in successfully');
+                const result = await response.json()
+                setUserID(result)
+                Cookies.set('userID', result);
+                window.location.href = '/';
             } else {
                 const errorMessage = await response.text(); 
                 alert('Log-in failed: ' + errorMessage);
@@ -28,7 +46,7 @@ function LogIn() {
             alert('Log-in failed: Network error');
         }
     };
-
+  
     return (
         <>
             <div className='log-in-Form'>
@@ -40,8 +58,10 @@ function LogIn() {
                     <button>Log in</button>
                 </form>
             </div>
+            <StyledLink to='/sing-up'>Don't have account?</StyledLink>
         </>
     );
-}
+  }
+  
 
 export default LogIn;

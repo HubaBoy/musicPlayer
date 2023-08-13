@@ -138,13 +138,6 @@ app.post('/upload', upload.fields([{name: "songInput", maxCount:1}, {name: "thum
 })})
 
 
-app.get('/song', (req,res ) => {
-  const song = fs.readFileSync('./FRIENDS.mp3')
-  res.set('Content-Type', 'audio/mpeg');
-  res.set('Content-Length', song.length);
-  res.send(song)
-})
-
   app.post('/sign-up', (req, res) => {
     if (!req.body) {
       return res.status(400).send('Bad Request');
@@ -172,15 +165,20 @@ app.get('/song', (req,res ) => {
         console.error('Error finding a user', error)
         res.status(500).send('Error finding a user')
       }else{
-        if(results === 0)
+        if(results.length === 0)
         {
           res.send(`User with email ${req.body.email} not found`)
-        }else if(results.password != req.body.password)
+        }else if(results[0].Pword != req.body.password)
         {
-          res.send('Password is not correct')
+          const IncorrectPasword = new Error('Your password does not match');
+          console.log(results[0].Pword)
+          console.log(req.body.password)
+          res.status(401).send(IncorrectPasword.message);
         }
         else{
-          res.send(results.id)
+          const id = results[0].id 
+          console.log(id.toString())
+          res.send(id.toString())
         }
       }
       

@@ -1,8 +1,8 @@
 .top-nav{
+  z-index: 9999;
   height: 10dvh;
   width: 100%;
   background-color: black;
-  margin: 0;
 }
 
 .upload-button{
@@ -86,6 +86,7 @@
 }
 
 .card p{
+  margin-top: 1.7dvh;
   font-size: 3.5dvh;
   font-weight: bold;
 }
