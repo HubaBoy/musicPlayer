@@ -178,6 +178,23 @@ app.post('/upload', upload.fields([{name: "songInput", maxCount:1}, {name: "thum
     })
   })
 
+  app.get('/user/:id', (req, res) =>{
+    const query = `Select * from users where id = ${req.params.id}`
+    connection.query(query, (error, results)=>{
+      if(error)
+      {
+        console.error(error);
+        res.status(500).send('Error finding the user');
+      }
+      else if (results.length === 0)
+      {
+      res.status(404).send('song not found');
+      }
+     const user = results;
+     res.send(user);
+    })
+  })
+
   // Start the server
   app.listen(3000, () => {
     console.log('Server is running on port 3000');

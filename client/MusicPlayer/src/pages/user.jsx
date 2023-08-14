@@ -14,9 +14,27 @@ p{
 
 function User()
 {
+    const {id} = useParams();
+    const {userName, setUserName} = useState();
 
     useEffect(()=>{
-        fetch('http://localhost:3000/user')
+        fetch(`http://localhost:3000/user/${id}`)
+        .then(response => {
+            if(!response.ok)
+            {
+                throw new Error('Error finding the user')
+            }
+            return response.json
+        })
+        .then(data => {
+            console.log(data);
+            setUserName(data);
+        })
+        .catch(error => {
+            {
+                console.error(error)
+            }
+        })
     },[])
 
     return(
