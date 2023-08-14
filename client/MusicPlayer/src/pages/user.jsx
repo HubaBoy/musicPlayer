@@ -15,7 +15,7 @@ p{
 function User()
 {
     const {id} = useParams();
-    const {userName, setUserName} = useState();
+    const [userName, setUserName] = useState('');
 
     useEffect(()=>{
         fetch(`http://localhost:3000/user/${id}`)
@@ -24,11 +24,12 @@ function User()
             {
                 throw new Error('Error finding the user')
             }
-            return response.json
+            return response.json()
         })
         .then(data => {
-            console.log(data);
-            setUserName(data);
+            console.log(data[0].userName);
+            setUserName(data[0].userName);
+            console.log(userName)
         })
         .catch(error => {
             {
@@ -49,7 +50,7 @@ function User()
         <div className='user-bar'>
             <img src={avatar}></img>
             <h1>
-                Velizar Tsiklovski
+               {userName}
             </h1>
         </div>
         </>

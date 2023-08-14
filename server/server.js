@@ -179,7 +179,7 @@ app.post('/upload', upload.fields([{name: "songInput", maxCount:1}, {name: "thum
   })
 
   app.get('/user/:id', (req, res) =>{
-    const query = `Select * from users where id = ${req.params.id}`
+    const query = `Select userName from users where id = ${req.params.id}`
     connection.query(query, (error, results)=>{
       if(error)
       {
