@@ -13,6 +13,7 @@ import Cookies from 'js-cookie';
 import LogIn from './pages/log-in.jsx';
 import Upload from './pages/upload.jsx';
 import Home from './pages/home.jsx'
+import User from './pages/user.jsx'
 
 function App() {
   const [userID, setUserID] = useState(Cookies.get('userID') || 0);
@@ -23,6 +24,7 @@ function App() {
         <Route path='/upload' element={<Upload />}></Route>
         <Route path= 'sing-up' element={<SignUp/>}></Route>
         <Route path= 'log-in' element={<LogIn userID={userID} setUserID={setUserID}/>}></Route>
+        <Route path= '/user/:id' element={<User/>}></Route>
       </>
     )
   )

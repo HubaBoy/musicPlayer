@@ -6,14 +6,7 @@ multer = require('multer');
 const fs = require('fs');
 const { connect } = require('http2');
 bodyParser = require('body-parser')
-
-
-const connection =  mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'SW.r2d2.c3po',
-    database: 'musicplayer'
-  });
+const connection = require('./db');
 
   connection.connect();
 
