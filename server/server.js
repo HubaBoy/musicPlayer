@@ -116,9 +116,9 @@ const connection = require('./db');
 app.post('/upload', upload.fields([{name: "songInput", maxCount:1}, {name: "thumbnailInput", maxCount:1} ]) , (req,res)=>{
   console.log(req.files);
   console.log(req.body.textInput)
-  const insertQuery = `INSERT INTO songs (title, song, thumbnail) VALUES (?, ?,?)`;
-  const insertValues = [req.body.textInput ,req.files['songInput'][0].path, req.files['thumbnailInput'][0].path];
-  
+  const insertQuery = `INSERT INTO songs (title, song, thumbnail, userId) VALUES (?, ?,?,?)`;
+  const insertValues = [req.body.textInput ,req.files['songInput'][0].path, req.files['thumbnailInput'][0].path, req.body.userID];
+  console.log(req.body.userID)
   // Execute the INSERT statement
   connection.query(insertQuery, insertValues, (error, results) => {
     if (error) {

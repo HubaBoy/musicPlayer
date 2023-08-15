@@ -18,3 +18,23 @@
     margin-left: 2dvw;
     margin-top: 2dvh;
 }
+
+.upload-avatar-button{
+    height: 5dvh;
+    width: 5dvh;
+    position: absolute;
+    font-size: 6dvh;
+    top: 11dvh;
+    left: 25dvh;
+    border-radius: 30%;
+    border: black;
+    background-color: white;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.upload-avatar-button p{
+    margin-top: 0.2dvh;
+    color: black;
+    font-weight: bold;
+}

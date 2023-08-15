@@ -12,7 +12,7 @@ p{
 `;
 
 
-function User()
+function User({userID})
 {
     const {id} = useParams();
     const [userName, setUserName] = useState('');
@@ -27,9 +27,7 @@ function User()
             return response.json()
         })
         .then(data => {
-            console.log(data[0].userName);
             setUserName(data[0].userName);
-            console.log(userName)
         })
         .catch(error => {
             {
@@ -49,6 +47,13 @@ function User()
         </div>
         <div className='user-bar'>
             <img src={avatar}></img>
+            {userID === id &&
+            <StyledLink>
+            <div className='upload-avatar-button'>
+            <p>+</p>
+             </div>
+            </StyledLink>
+            }
             <h1>
                {userName}
             </h1>

@@ -21,10 +21,10 @@ function App() {
     createRoutesFromElements(
       < >
         <Route index element={<Home userID={userID}/>}></Route>
-        <Route path='/upload' element={<Upload />}></Route>
+        <Route path='/upload' element={<Upload userID={userID} />}></Route>
         <Route path= 'sing-up' element={<SignUp/>}></Route>
         <Route path= 'log-in' element={<LogIn userID={userID} setUserID={setUserID}/>}></Route>
-        <Route path= '/user/:id' element={<User/>}></Route>
+        <Route path= '/user/:id' element={<User userID={userID}/>}></Route>
       </>
     )
   )

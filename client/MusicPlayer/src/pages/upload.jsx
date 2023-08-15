@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
-function Upload() {
+function Upload({userID}) {
     const [textInput, setTextInput] = useState('');
     const [songInput, setSongInput] = useState(null);
     const [thumbnailInput, setThumbnailInput] = useState(null);
-  
+    console.log(userID)
     const handleTextChange = (event) => {
       setTextInput(event.target.value);
     };
@@ -25,7 +25,7 @@ function Upload() {
       formData.append('textInput', textInput);
       formData.append('songInput', songInput);
       formData.append('thumbnailInput', thumbnailInput);
-  
+      formData.append('userID', userID.toString())
       try {
         const response = await fetch('http://localhost:3000/upload', {
           method: 'POST',
