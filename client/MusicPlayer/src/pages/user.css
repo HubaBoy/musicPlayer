@@ -38,3 +38,11 @@
     color: black;
     font-weight: bold;
 }
+
+.user-songs{
+    min-height: 41dvh;
+    width: 100%;
+    background-color: black;
+    display: flex;
+    flex-flow: row wrap;
+}

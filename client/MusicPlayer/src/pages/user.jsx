@@ -3,6 +3,7 @@ import {Link, useParams} from 'react-router-dom'
 import styled from 'styled-components'
 import './user.css'
 import avatar from './avatar.jpg'
+import Card from '../components/card.jsx'
 const StyledLink = styled(Link)`
 text-decoration: none;
 p{
@@ -16,7 +17,10 @@ function User({userID})
 {
     const {id} = useParams();
     const [userName, setUserName] = useState('');
-    const [songs, SetSongs] = useState([]);
+    const [songs, setSongs] = useState([]);
+    const [source, setSource] = useState('0');
+    const [thumb, setThumb] = useState('');
+    const [title, setTitle] = useState('');
 
     useEffect(()=>{
         fetch(`http://localhost:3000/user/${id}`)
@@ -47,10 +51,9 @@ function User({userID})
             return response.json()
         })
         .then(data => {
-            console.log(data)
-            SetSongs(data)
-            console.log(songs)
-        })
+            setSongs(data);
+            console.log(data);
+          })
         .catch(error =>{
             console.error(error)
         })
@@ -78,7 +81,27 @@ function User({userID})
                {userName}
             </h1>
         </div>
-        </>
+        <div className="user-songs">
+            {songs.map((song,index)=>(
+                <Card
+                 key={index}
+                 song={song}
+                 setSource={setSource}
+                 setThumb={setThumb}
+                 setTitle={setTitle}
+                />
+            ))}
+        </div>
+         <div className='bottom-nav'>
+        {thumb !== '' && (
+          <div className='show-song'>
+            <img src={thumb} alt='thumbnail' />
+            <p>{title}</p>
+          </div>
+        )}
+        {source !== '0' && <audio src={source} controls />}
+      </div>
+    </>
     )
 }
 
