@@ -1,6 +1,6 @@
 .user-bar{
     width: 100dvw;
-    height: 40dvh;
+    height: 30dvh;
     background-color: rgb(35, 35, 35);
 
 }
@@ -45,4 +45,15 @@
     background-color: black;
     display: flex;
     flex-flow: row wrap;
+    padding-left: 5%;
+    padding-top: 6dvh;
+    padding-bottom: 11dvh;
+}
+
+.user-songs h2{
+    position: absolute;
+    margin-top: -5dvh;
+    margin-left: -8dvh;
+    color: aliceblue;
+    font-size: 4dvh;
 }

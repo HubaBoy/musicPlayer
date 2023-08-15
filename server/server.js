@@ -21,10 +21,6 @@ const { query } = require('express');
     credentials: true, 
   }));
 
-  app.get('/', (req, res) => {
-    res.send('hello world');
-  });
-
   app.get('/songs', (req, res) => {
     const query = `select id, title from songs;`
     connection.query(query, (error, results) => {

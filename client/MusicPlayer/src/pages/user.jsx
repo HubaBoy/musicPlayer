@@ -82,6 +82,7 @@ function User({userID})
             </h1>
         </div>
         <div className="user-songs">
+            <h2>Songs published by {userName}</h2>
             {songs.map((song,index)=>(
                 <Card
                  key={index}
