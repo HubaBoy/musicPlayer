@@ -7,6 +7,7 @@ const fs = require('fs');
 const { connect } = require('http2');
 bodyParser = require('body-parser')
 const connection = require('./db');
+const { query } = require('express');
 
   connection.connect();
 
@@ -14,10 +15,10 @@ const connection = require('./db');
   app.use(bodyParser.urlencoded({ extended: true })); 
   
   app.use(cors({
-    origin: '*', // Allow requests from this origin
-    methods: 'GET,POST', // Allow specified HTTP methods
-    optionsSuccessStatus: 200, // Return 200 for preflight requests
-    credentials: true, // Allow cookies and authorization headers
+    origin: '*', 
+    methods: 'GET,POST', 
+    optionsSuccessStatus: 200, 
+    credentials: true, 
   }));
 
   app.get('/', (req, res) => {
@@ -119,7 +120,6 @@ app.post('/upload', upload.fields([{name: "songInput", maxCount:1}, {name: "thum
   const insertQuery = `INSERT INTO songs (title, song, thumbnail, userId) VALUES (?, ?,?,?)`;
   const insertValues = [req.body.textInput ,req.files['songInput'][0].path, req.files['thumbnailInput'][0].path, req.body.userID];
   console.log(req.body.userID)
-  // Execute the INSERT statement
   connection.query(insertQuery, insertValues, (error, results) => {
     if (error) {
       console.error('Error inserting song:', error);
@@ -193,6 +193,17 @@ app.post('/upload', upload.fields([{name: "songInput", maxCount:1}, {name: "thum
      const user = results;
      res.send(user);
     })
+  })
+
+  app.get('/songs/:user', (req,res) =>{
+    const query = `select id,title from songs where userID = ${req.params.user}`
+    connection.query(query, (error, results) => {
+      if(error)
+      {
+        console.log(error)
+      }else{
+        res.send(results)
+  }})
   })
 
   // Start the server

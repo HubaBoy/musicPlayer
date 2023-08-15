@@ -16,6 +16,7 @@ function User({userID})
 {
     const {id} = useParams();
     const [userName, setUserName] = useState('');
+    const [songs, SetSongs] = useState([]);
 
     useEffect(()=>{
         fetch(`http://localhost:3000/user/${id}`)
@@ -33,6 +34,25 @@ function User({userID})
             {
                 console.error(error)
             }
+        })
+    },[])
+
+    useEffect(()=>{
+        fetch(`http://localhost:3000/songs/${id}`)
+        .then(response =>{
+            if(!response.ok)
+            {
+                throw new Error('Error retrieving the songs')
+            }
+            return response.json()
+        })
+        .then(data => {
+            console.log(data)
+            SetSongs(data)
+            console.log(songs)
+        })
+        .catch(error =>{
+            console.error(error)
         })
     },[])
 
