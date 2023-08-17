@@ -202,6 +202,47 @@ app.post('/upload', upload.fields([{name: "songInput", maxCount:1}, {name: "thum
   }})
   })
 
+  app.delete('/song/:id', (req,res) =>{
+    const Tquery = `SELECT thumbnail FROM songs WHERE id = ${req.params.id}`;
+    const Squery = `SELECT song FROM songs WHERE id = ${req.params.id}`;
+    connection.query(Tquery, (error, results) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send('Error retrieving the image path');
+      } else {
+        fs.unlink( results[0].thumbnail, (err) => {
+          if (err) {
+              throw err;
+          }
+          console.log("Delete thumbnail successfully.");
+      });
+      }
+  })
+  connection.query(Squery, (error, results) => {
+    if (error) {
+      console.error(error);
+      res.status(500).send('Error retrieving the song path');
+    } else {
+      fs.unlink( results[0].song, (err) => {
+        if (err) {
+            throw err;
+        }
+        console.log("Delete song successfully.");
+    });
+    }
+})
+   const deleteQuery = `DELETE FROM songs WHERE id = ${req.params.id};`
+   connection.query(deleteQuery, (error, results) => {
+    if (error) {
+      console.error('Error inserting user:', error);
+      res.status(500).send('Error signing up');
+    } else {
+      console.log('User inserted successfully');
+      res.status(200).send('Sign-up is successful');
+    }
+  });
+})
+
   // Start the server
   app.listen(3000, () => {
     console.log('Server is running on port 3000');
