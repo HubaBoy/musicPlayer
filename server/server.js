@@ -16,7 +16,7 @@ const { query } = require('express');
   
   app.use(cors({
     origin: '*', 
-    methods: 'GET,POST', 
+    methods: 'GET,POST, DELETE', 
     optionsSuccessStatus: 200, 
     credentials: true, 
   }));

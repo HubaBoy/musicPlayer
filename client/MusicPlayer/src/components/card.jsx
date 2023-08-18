@@ -1,9 +1,13 @@
 import React, {useState, useEffect} from 'react'
 import image from './image.jpg'
 
-function Card({ song, setSource, setThumb, setTitle }) {
+function Card({ song, setSource, setThumb, setTitle, setdId }) {
     function handleClick() {
-      fetch(`http://localhost:3000/song/${song.id}`)
+      
+      if(setdId !== undefined){
+        setdId
+      }
+      else{fetch(`http://localhost:3000/song/${song.id}`)
       .then(response => {
         if (!response.ok) {
           throw new Error('Error retrieving song');
@@ -22,8 +26,9 @@ function Card({ song, setSource, setThumb, setTitle }) {
       }
       else{
         setThumb(thumbnail);
-      }
+      }}
       setTitle(song.title);
+      setdId(song.id)
     }
   
     const [thumbnail, setThumbnail] = useState(null);
