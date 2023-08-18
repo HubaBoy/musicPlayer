@@ -3,6 +3,7 @@ import '../App.css';
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
 import Card from '../components/card.jsx'
+import avatar from './avatar.jpg'
 const StyledLink = styled(Link)`
 text-decoration: none;
 /* Add any other custom styles you want to apply to the Link here */
@@ -43,6 +44,9 @@ function Home({userID})
             <p>+</p>
         </div>
         </StyledLink>
+        <Link to={`/user/${userID}`}>
+        <img src={avatar}></img>
+        </Link>
       </div>
       <div className='middle-nav'>
         {songs.map((song, index) => (

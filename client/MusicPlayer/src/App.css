@@ -91,3 +91,13 @@
   font-weight: bold;
 }
 
+
+.top-nav img{
+  position: absolute;
+  border-radius: 100%;
+  width: 9dvh;
+  height: 9dvh;
+  right: 1dvw;
+  top: 0.5dvh;
+}
+
