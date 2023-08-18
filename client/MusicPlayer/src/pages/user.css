@@ -57,3 +57,22 @@
     color: aliceblue;
     font-size: 4dvh;
 }
+.delete-button{
+    height: 5dvh;
+    width: 5dvh;
+    position: absolute;
+    font-size: 5dvh;
+    right: 2dvh;
+    border-radius: 30%;
+    border: black;
+    background-color: white;
+    text-align: center;
+    vertical-align: middle;
+    margin-top: -5dvh;
+}
+
+.delete-button p{
+    margin-top: 0.2dvh;
+    color: black;
+    font-weight: bold;
+}

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {Link, useParams} from 'react-router-dom'
+import {Link, useParams, Outlet} from 'react-router-dom'
 import styled from 'styled-components'
 import './user.css'
 import avatar from './avatar.jpg'
@@ -92,6 +92,13 @@ function User({userID})
                  setTitle={setTitle}
                 />
             ))}
+            {userID === id && 
+            <StyledLink to='delete'>
+            <div className='delete-button'>
+                <p>🗑️</p>
+            </div>
+            </StyledLink>
+            }
         </div>
          <div className='bottom-nav'>
         {thumb !== '' && (
