@@ -8,6 +8,7 @@ const { connect } = require('http2');
 bodyParser = require('body-parser')
 const connection = require('./db');
 const { query } = require('express');
+const { Server } = require('http');
 
   connection.connect();
 
@@ -48,7 +49,7 @@ const { query } = require('express');
         res.status(404).send('Thumbnail not found');
       } else {
         const thumbnailPath = results[0].thumbnail; 
-        if(results){
+        if(thumbnailPath){
           fs.readFile(thumbnailPath, (readError, thumbnailData) => {
             if (readError) {
               console.error(readError);
@@ -117,8 +118,10 @@ const { query } = require('express');
 app.post('/upload', upload.fields([{name: "songInput", maxCount:1}, {name: "thumbnailInput", maxCount:1} ]) , (req,res)=>{
   console.log(req.files);
   console.log(req.body.textInput)
+  const thumbnailPath = req.files['thumbnailInput'] ? req.files['thumbnailInput'][0].path : null;
+  console.log(thumbnailPath);
   const insertQuery = `INSERT INTO songs (title, song, thumbnail, userId) VALUES (?, ?,?,?)`;
-  const insertValues = [req.body.textInput ,req.files['songInput'][0].path, req.files['thumbnailInput'][0].path, req.body.userID];
+  const insertValues = [req.body.textInput ,req.files['songInput'][0].path, thumbnailPath, req.body.userID];
   console.log(req.body.userID)
   connection.query(insertQuery, insertValues, (error, results) => {
     if (error) {
