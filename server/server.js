@@ -247,10 +247,10 @@ app.post('/upload', upload.fields([{name: "songInput", maxCount:1}, {name: "thum
 })
 
 app.put('/avatar/:id', upload.fields([{name: "avatarInput", maxCount:1}]), (req, res) => {
-    console.log(req.files);
-     const updateQuery = `update users set avatar= '${req.files['avatarInput'][0].path}' where id = ${req.params.id}`
+    console.log(req.files.path);
+     const updateQuery = `update users set avatar= ? where id = ${req.params.id}`
      console.log(updateQuery)
-      connection.query(updateQuery, (error, results)=>{
+      connection.query(updateQuery, [req.files['avatarInput'][0].path], (error, results)=>{
         if(error)
         {
           res.status(500).send('Internal server error')
@@ -260,6 +260,35 @@ app.put('/avatar/:id', upload.fields([{name: "avatarInput", maxCount:1}]), (req,
       
       }) 
 })
+
+  app.get('/avatar/:id', (req, res) => {
+      const selectQuery = `select avatar from users where id = ${req.params.id}`
+      connection.query(selectQuery, (error, results)=> {
+        if(error)
+        {
+          res.status(500).send('Error retrieving the avatar')
+        }else if(results === 0)
+        {
+          res.status(404).send('Avatar not found')
+        } else{
+          const avatarPath = results[0].avatar;
+          console.log(avatarPath)
+          fs.readFile(avatarPath, (readError, avatarData) => {
+            if(readError)
+            {
+              res.status(500).send('Error retrieving the avatar')
+              console.error(readError)
+            }
+            else{
+              res.set('Content-Type', 'image/jpg')
+              res.set('Content-lenght', avatarData.length)
+              res.send(avatarData);
+            }
+          })
+        }
+      })
+  })
+
   // Start the server
   app.listen(3000, () => {
     console.log('Server is running on port 3000');
