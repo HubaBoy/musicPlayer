@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import {Link, useParams, Outlet} from 'react-router-dom'
 import styled from 'styled-components'
 import './user.css'
-import avatar from './avatar.jpg'
+import avatar0 from './avatar.jpg'
 import Card from '../components/card.jsx'
 const StyledLink = styled(Link)`
 text-decoration: none;
@@ -21,8 +21,8 @@ function User({userID})
     const [source, setSource] = useState('0');
     const [thumb, setThumb] = useState('');
     const [title, setTitle] = useState('');
-    const [avatarInput, setAvatarInput] = useState(null)
-
+    const [avatarInput, setAvatarInput] = useState(null);
+    const [avatar, setAvatar] = useState(null);
     useEffect(()=>{
         fetch(`http://localhost:3000/user/${id}`)
         .then(response => {
@@ -85,6 +85,23 @@ function User({userID})
         })
     },[])
 
+    useEffect(()=> {
+        fetch(`http://localhost:3000/avatar/${id}`)
+            .then(response => {
+                if(!response.ok)
+                {
+                    throw new Error('Error retrieving the avatar')
+                }
+                return response.blob()
+            }).then(data => {
+                const dataURL = URL.createObjectURL(data)
+                console.log(data)
+                setAvatar(dataURL)
+            }).catch(error => {
+                console.error(error)
+            })
+    }, [])
+
     return(
         <>
         <div className="top-nav">
@@ -95,7 +112,7 @@ function User({userID})
         </StyledLink>
         </div>
         <div className='user-bar'>
-            <img src={avatar}></img>
+            <img src={avatar === null ? avatar0 : avatar} alt='avatar'></img>
             {userID === id &&
             <div className='upload-avatar-button'>
                 <form method="PUT" enctype="multipart/form-data">
