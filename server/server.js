@@ -246,9 +246,10 @@ app.post('/upload', upload.fields([{name: "songInput", maxCount:1}, {name: "thum
   });
 })
 
-app.put('/avatar/:id', upload.fields({name: "avatarInput", maxCount:1}), (req, res) => {
+app.put('/avatar/:id', upload.fields([{name: "avatarInput", maxCount:1}]), (req, res) => {
     console.log(req.files);
-      const updateQuery = `update users set avatar= ${req.files['avatarInput'][0].path} where id = ${req.params.id}`
+     const updateQuery = `update users set avatar= '${req.files['avatarInput'][0].path}' where id = ${req.params.id}`
+     console.log(updateQuery)
       connection.query(updateQuery, (error, results)=>{
         if(error)
         {
@@ -257,7 +258,6 @@ app.put('/avatar/:id', upload.fields({name: "avatarInput", maxCount:1}), (req, r
           console.log('Avatar inserted successfully');
         }
       
-      res.send('Avatar upload success');
       }) 
 })
   // Start the server

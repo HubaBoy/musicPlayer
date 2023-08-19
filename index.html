@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Avatar</title>
+</head>
+<body>
+    <h1>Upload Avatar</h1>
+    <input type="file" id="avatarInput" accept="image/*" required>
+    <button id="uploadButton">Upload Avatar</button>
+
+    <script>
+        document.getElementById('uploadButton').addEventListener('click', () => {
+            const fileInput = document.getElementById('avatarInput');
+            const file = fileInput.files[0];
+
+            if (file) {
+                const formData = new FormData();
+                formData.append('avatarInput', file);
+
+                fetch('http://localhost:3000/avatar/1', {
+                    method: 'PUT',
+                    body: formData
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.text();
+                    } else {
+                        throw new Error('Upload failed');
+                    }
+                })
+                .then(data => {
+                    console.log(data); // Handle the response data as needed
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+            } else {
+                console.error('No file selected.');
+            }
+        });
+    </script>
+</body>
+</html>

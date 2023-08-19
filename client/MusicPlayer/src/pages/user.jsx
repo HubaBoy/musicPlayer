@@ -98,7 +98,9 @@ function User({userID})
             <img src={avatar}></img>
             {userID === id &&
             <div className='upload-avatar-button'>
-                <input type="file" onChange={handleAvatarChange} accept="image/*"></input>
+                <form method="PUT" enctype="multipart/form-data">
+                <input type="file" onChange={handleAvatarChange} name="avatar" accept="image/*"></input>
+                </form>
             <p>+</p>
              </div>
             }
