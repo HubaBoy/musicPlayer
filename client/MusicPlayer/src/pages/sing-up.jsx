@@ -27,8 +27,7 @@ function SignUp()
             });
             
             if (response.ok) {
-              const errorMessage = await response.text(); // Get the error message from the response
-              alert('Sign-up failed:', errorMessage);
+              alert('Sign-up succesfull');
               window.location.href = '/log-in';
             } else {
               const errorMessage = await response.text(); // Get the error message from the response
