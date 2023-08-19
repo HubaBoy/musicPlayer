@@ -3,7 +3,7 @@ import '../App.css';
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
 import Card from '../components/card.jsx'
-import avatar from './avatar.jpg'
+import avatar0 from './avatar.jpg'
 const StyledLink = styled(Link)`
 text-decoration: none;
 /* Add any other custom styles you want to apply to the Link here */
@@ -15,6 +15,7 @@ function Home({userID})
   const [thumb, setThumb] = useState('');
   const [title, setTitle] = useState('');
   const [songs, setSongs] = useState([]);
+  const [avatar, setAvatar] = useState(null);
 
   if(userID===0)
   {
@@ -36,6 +37,23 @@ function Home({userID})
       .catch(error => console.log(error));
   }, []);
 
+  useEffect(()=> {
+    fetch(`http://localhost:3000/avatar/${userID}`)
+        .then(response => {
+            if(!response.ok)
+            {
+                throw new Error('Error retrieving the avatar')
+            }
+            return response.blob()
+        }).then(data => {
+            const dataURL = URL.createObjectURL(data)
+            console.log(data)
+            setAvatar(dataURL)
+        }).catch(error => {
+            console.error(error)
+        })
+}, [])
+
   return (
     <>
       <div className='top-nav'>
@@ -45,7 +63,7 @@ function Home({userID})
         </div>
         </StyledLink>
         <Link to={`/user/${userID}`}>
-        <img src={avatar}></img>
+        <img src={avatar === null ? avatar0 : avatar} alt='avatar'></img>
         </Link>
       </div>
       <div className='middle-nav'>

@@ -48,17 +48,18 @@ const { query } = require('express');
         res.status(404).send('Thumbnail not found');
       } else {
         const thumbnailPath = results[0].thumbnail; 
-  
-        fs.readFile(thumbnailPath, (readError, thumbnailData) => {
-          if (readError) {
-            console.error(readError);
-            res.status(500).send('Error reading thumbnail file');
-          } else {
-            res.set('Content-Type', 'image/jpeg');
-            res.set('Content-Length', thumbnailData.length);
-            res.send(thumbnailData);
-          }
-        });
+        if(results){
+          fs.readFile(thumbnailPath, (readError, thumbnailData) => {
+            if (readError) {
+              console.error(readError);
+              res.status(500).send('Error reading thumbnail file');
+            } else {
+              res.set('Content-Type', 'image/jpeg');
+              res.set('Content-Length', thumbnailData.length);
+              res.send(thumbnailData);
+            }
+          });
+        }
       }
     });
   });
