@@ -273,18 +273,21 @@ app.put('/avatar/:id', upload.fields([{name: "avatarInput", maxCount:1}]), (req,
         } else{
           const avatarPath = results[0].avatar;
           console.log(avatarPath)
-          fs.readFile(avatarPath, (readError, avatarData) => {
-            if(readError)
-            {
-              res.status(500).send('Error retrieving the avatar')
-              console.error(readError)
-            }
-            else{
-              res.set('Content-Type', 'image/jpg')
-              res.set('Content-lenght', avatarData.length)
-              res.send(avatarData);
-            }
-          })
+          if(avatarPath)
+          {
+            fs.readFile(avatarPath, (readError, avatarData) => {
+              if(readError)
+              {
+                res.status(500).send('Error retrieving the avatar')
+                console.error(readError)
+              }
+              else{
+                res.set('Content-Type', 'image/jpg')
+                res.set('Content-lenght', avatarData.length)
+                res.send(avatarData);
+              }
+            })
+          }
         }
       })
   })
