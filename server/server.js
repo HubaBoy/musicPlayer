@@ -16,7 +16,7 @@ const { query } = require('express');
   
   app.use(cors({
     origin: '*', 
-    methods: 'GET,POST, DELETE', 
+    methods: 'GET,POST,DELETE, PUT', 
     optionsSuccessStatus: 200, 
     credentials: true, 
   }));
@@ -98,6 +98,9 @@ const { query } = require('express');
         }else if(file.fieldname === 'thumbnailInput')
         {
           cb(null, './uploads/thumbnails')
+        }else if(file.fieldname === 'avatarInput')
+        {
+          cb(null, './uploads/avatars')
         }
         else{
           cb(new Error('Invalid field name'));
@@ -234,8 +237,8 @@ app.post('/upload', upload.fields([{name: "songInput", maxCount:1}, {name: "thum
    const deleteQuery = `DELETE FROM songs WHERE id = ${req.params.id};`
    connection.query(deleteQuery, (error, results) => {
     if (error) {
-      console.error('Error inserting user:', error);
-      res.status(500).send('Error signing up');
+      console.error('Error deleting the song:', error);
+      res.status(500).send('Error deleting the song');
     } else {
       console.log('User inserted successfully');
       res.status(200).send('Sign-up is successful');
@@ -243,6 +246,20 @@ app.post('/upload', upload.fields([{name: "songInput", maxCount:1}, {name: "thum
   });
 })
 
+app.put('/avatar/:id', upload.fields({name: "avatarInput", maxCount:1}), (req, res) => {
+    console.log(req.files);
+      const updateQuery = `update users set avatar= ${req.files['avatarInput'][0].path} where id = ${req.params.id}`
+      connection.query(updateQuery, (error, results)=>{
+        if(error)
+        {
+          res.status(500).send('Internal server error')
+        }else {
+          console.log('Avatar inserted successfully');
+        }
+      
+      res.send('Avatar upload success');
+      }) 
+})
   // Start the server
   app.listen(3000, () => {
     console.log('Server is running on port 3000');

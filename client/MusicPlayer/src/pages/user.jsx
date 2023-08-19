@@ -21,6 +21,7 @@ function User({userID})
     const [source, setSource] = useState('0');
     const [thumb, setThumb] = useState('');
     const [title, setTitle] = useState('');
+    const [avatarInput, setAvatarInput] = useState(null)
 
     useEffect(()=>{
         fetch(`http://localhost:3000/user/${id}`)
@@ -40,6 +41,31 @@ function User({userID})
             }
         })
     },[])
+
+    const handleAvatarChange = async (event) => {
+        setAvatarInput(event.target.files[0]);
+        let input = event.target.files[0];
+        console.log(avatarInput);
+        
+        const formData = new FormData();
+        formData.append('avatarInput', input);
+    
+        try {
+            const result = await fetch(`http://localhost:3000/avatar/${userID}`, {
+                method: 'PUT',
+                body: formData
+            });
+    
+            if (result.ok) {
+                alert('Upload successful');
+                setAvatarInput(null)
+            } else {
+                alert('Upload failed');
+            }
+        } catch (error) {
+            console.error('Error uploading:', error);
+        }
+    };
 
     useEffect(()=>{
         fetch(`http://localhost:3000/songs/${id}`)
@@ -71,11 +97,10 @@ function User({userID})
         <div className='user-bar'>
             <img src={avatar}></img>
             {userID === id &&
-            <StyledLink>
             <div className='upload-avatar-button'>
+                <input type="file" onChange={handleAvatarChange} accept="image/*"></input>
             <p>+</p>
              </div>
-            </StyledLink>
             }
             <h1>
                {userName}

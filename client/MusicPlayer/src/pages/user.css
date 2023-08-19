@@ -34,9 +34,16 @@
 }
 
 .upload-avatar-button p{
-    margin-top: 0.2dvh;
+    margin-top: -0.5dvh;
     color: black;
     font-weight: bold;
+}
+.upload-avatar-button input{
+position: absolute;
+opacity: 0;
+margin-left: -1.7dvw;
+margin-top: 0.6dvh;
+
 }
 
 .user-songs{
@@ -76,3 +83,4 @@
     color: black;
     font-weight: bold;
 }
+
