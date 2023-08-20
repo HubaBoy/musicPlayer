@@ -49,13 +49,21 @@ function User({userID})
         
         const formData = new FormData();
         formData.append('avatarInput', input);
-    
+        var allowedExtensions =
+                    /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+        let inputPath = event.target.value;     
+            if (!allowedExtensions.exec(inputPath)) {
+                alert('Invalid file type');
+                fileInput.value = '';
+                return false;
+            }
+            else
+            {
         try {
             const result = await fetch(`http://localhost:3000/avatar/${userID}`, {
                 method: 'PUT',
                 body: formData
             });
-    
             if (result.ok) {
                 alert('Upload successful');
                 setAvatarInput(null)
@@ -65,7 +73,7 @@ function User({userID})
         } catch (error) {
             console.error('Error uploading:', error);
         }
-    };
+    }};
 
     useEffect(()=>{
         fetch(`http://localhost:3000/songs/${id}`)
@@ -115,7 +123,7 @@ function User({userID})
             <img src={avatar === null ? avatar0 : avatar} alt='avatar'></img>
             {userID === id &&
             <div className='upload-avatar-button'>
-                <form method="PUT" enctype="multipart/form-data">
+                <form method="PUT" encType="multipart/form-data">
                 <input type="file" onChange={handleAvatarChange} name="avatar" accept="image/*"></input>
                 </form>
             <p>+</p>

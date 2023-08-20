@@ -55,7 +55,7 @@ const { Server } = require('http');
               console.error(readError);
               res.status(500).send('Error reading thumbnail file');
             } else {
-              res.set('Content-Type', 'image/jpeg');
+              res.set('Content-Type', 'image/png');
               res.set('Content-Length', thumbnailData.length);
               res.send(thumbnailData);
             }
@@ -89,11 +89,10 @@ const { Server } = require('http');
             const stream = fs.createReadStream(songPath)
             stream.on('data', (chunkdata) => {
               res.write(chunkdata);
-              console.log('Sent a chunk');
             });
             stream.on('end', ()=>{
-              console.log('Streaming complete');
               res.end()
+
             })
           }
         })
