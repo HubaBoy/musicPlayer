@@ -1,45 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Avatar</title>
+  <title>Fetch MP3 in Chunks</title>
 </head>
 <body>
-    <h1>Upload Avatar</h1>
-    <input type="file" id="avatarInput" accept="image/*" required>
-    <button id="uploadButton">Upload Avatar</button>
+  <audio controls id="audio-player"></audio>
 
-    <script>
-        document.getElementById('uploadButton').addEventListener('click', () => {
-            const fileInput = document.getElementById('avatarInput');
-            const file = fileInput.files[0];
+  <script>
+    const audioPlayer = document.getElementById('audio-player');
 
-            if (file) {
-                const formData = new FormData();
-                formData.append('avatarInput', file);
+    // Fetch the MP3 file in chunks
+    async function fetchMP3Chunks() {
+      const url = 'http://localhost:3000/song/1'; // Replace with the appropriate server URL
 
-                fetch('http://localhost:3000/avatar/1', {
-                    method: 'PUT',
-                    body: formData
-                })
-                .then(response => {
-                    if (response.ok) {
-                        return response.text();
-                    } else {
-                        throw new Error('Upload failed');
-                    }
-                })
-                .then(data => {
-                    console.log(data); // Handle the response data as needed
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-            } else {
-                console.error('No file selected.');
-            }
+      try {
+        const response = await fetch(url, {
+          headers: { Range: 'bytes=0-' }, // Request the first chunk
         });
-    </script>
+
+        if (!response.ok) {
+          console.error('Error:', response.statusText);
+          return;
+        }
+
+        const contentRange = response.headers.get('Content-Range');
+        const totalSize = parseInt(contentRange.split('/')[1]);
+
+        // Initialize a media source object
+        const mediaSource = new MediaSource();
+        audioPlayer.src = URL.createObjectURL(mediaSource);
+
+        mediaSource.addEventListener('sourceopen', async () => {
+          const sourceBuffer = mediaSource.addSourceBuffer('audio/mpeg');
+
+          let receivedBytes = 0;
+
+          sourceBuffer.addEventListener('updateend', async () => {
+            if (receivedBytes < totalSize) {
+              const endByte = Math.min(receivedBytes + 1024 * 1024, totalSize - 1);
+              const rangeHeader = `bytes=${receivedBytes}-${endByte}`;
+
+              const chunkResponse = await fetch(url, {
+                headers: { Range: rangeHeader },
+              });
+
+              if (!chunkResponse.ok) {
+                console.error('Error:', chunkResponse.statusText);
+                return;
+              }
+
+              const chunk = await chunkResponse.arrayBuffer();
+              sourceBuffer.appendBuffer(chunk);
+              receivedBytes = endByte + 1;
+
+              // If you want to play immediately, uncomment the following line
+              // if (!audioPlayer.paused) audioPlayer.play();
+
+              // Continue fetching more chunks until the entire file is buffered
+              if (receivedBytes < totalSize) {
+                fetchMP3Chunks();
+              }
+            }
+          });
+
+          // Start playback once the first chunk is appended
+          audioPlayer.play();
+        });
+      } catch (error) {
+        console.error('Fetch error:', error);
+      }
+    }
+
+    // Start fetching and streaming the MP3 file
+    fetchMP3Chunks();
+  </script>
 </body>
 </html>

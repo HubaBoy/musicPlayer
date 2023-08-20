@@ -83,14 +83,21 @@ const { Server } = require('http');
             res.status(500).send('Error retrieving song')
           }
           else{
-            res.set('Content-Type', 'audio/mpeg');
+            res.set('Content-Type', 'audio/mp3');
             res.set('Content-Length', songData.length)
-            res.send(songData);
+            res.send(songData); 
+            const stream = fs.createReadStream(songPath)
+            stream.on('data', (chunkdata) => {
+              res.write(chunkdata);
+              console.log('Sent a chunk');
+            });
+            stream.on('end', ()=>{
+              console.log('Streaming complete');
+              res.end()
+            })
           }
         })
-      }
-    });
-  });
+  }})});
   
     const storageEngine = multer.diskStorage({
       destination:(req,file, cb) =>{
