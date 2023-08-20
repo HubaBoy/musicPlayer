@@ -10,12 +10,32 @@ function Upload({userID}) {
     };
   
     const handleSongChange = (event) => {
+      const allowedExtensions = /\.(mp3|wav|flac|ogg)$/i;
+      const inputPath = event.target.value
+      if(!allowedExtensions.exec(inputPath)){
+        alert('Ivalid audio type')
+        event.target.value = '';
+        setSongInput(null)
+        return false
+      }
+      else if(allowedExtensions.exec(inputPath)){
       setSongInput(event.target.files[0]);
-    };
+    }};
   
     const handleThumbnailChange = (event) => {
-      setThumbnailInput(event.target.files[0]);
+      const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+      const inputPath = event.target.value;
+    
+      if (!allowedExtensions.exec(inputPath)) {
+        alert('Invalid image type');
+        event.target.value = '';
+        setThumbnailInput(null)
+        return false;
+      }else if (allowedExtensions.exec(inputPath)) {
+        setThumbnailInput(event.target.files[0]);
+      }
     };
+    
   
     const handleSubmit = async (event) => {
       event.preventDefault();
