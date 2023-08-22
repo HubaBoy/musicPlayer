@@ -198,10 +198,10 @@ app.post('/upload', upload.fields([{name: "songInput", maxCount:1}, {name: "thum
       else if (results.length === 0)
       {
       res.status(404).send('song not found');
-      }
+      }else{
      const user = results;
      res.send(user);
-    })
+    }})
   })
 
   app.get('/songs/:user', (req,res) =>{
@@ -277,13 +277,12 @@ app.put('/avatar/:id', upload.fields([{name: "avatarInput", maxCount:1}]), (req,
         if(error)
         {
           res.status(500).send('Error retrieving the avatar')
-        }else if(results === 0)
+        }else if(results.length === 0)
         {
           res.status(404).send('Avatar not found')
-        } else{
+        } else if(results.length > 0){
           const avatarPath = results[0].avatar;
           console.log(avatarPath)
-          if(avatarPath)
           {
             fs.readFile(avatarPath, (readError, avatarData) => {
               if(readError)
