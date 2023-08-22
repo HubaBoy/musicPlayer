@@ -147,16 +147,28 @@ app.post('/upload', upload.fields([{name: "songInput", maxCount:1}, {name: "thum
   else{
     const insertQuery = `INSERT INTO users (email, Pword, userName) VALUES (?, ?, ?)`;
     const insertValues = [ req.body.email, req.body.password, req.body.userName];
-
-    connection.query(insertQuery, insertValues, (error, results) => {
-      if (error) {
+    const checkQueary = `Select * from users where email = '${req.body.email}' `
+    connection.query(checkQueary, (error, results) => {
+      if(error)
+      {
         console.error('Error inserting user:', error);
         res.status(500).send('Error signing up');
-      } else {
-        console.log('User inserted successfully');
-        res.status(200).send('Sign-up is successful');
+      }else if(results.length>0){
+        const takenUser = new Error('the email is already taken');
+          res.status(409).send(takenUser);
       }
-    });
+      else{
+        connection.query(insertQuery, insertValues, (error, results) => {
+          if (error) {
+            console.error('Error inserting user:', error);
+            res.status(500).send('Error signing up');
+          } else {
+            console.log('User inserted successfully');
+            res.status(200).send('Sign-up is successful');
+          }
+        });
+      }
+    })
   }
   });
 
@@ -228,7 +240,7 @@ app.post('/upload', upload.fields([{name: "songInput", maxCount:1}, {name: "thum
               throw err;
           }
           console.log("Delete thumbnail successfully.");
-      });
+      })
       }
   })
   connection.query(Squery, (error, results) => {
