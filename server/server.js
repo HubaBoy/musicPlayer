@@ -155,7 +155,7 @@ app.post('/upload', upload.fields([{name: "songInput", maxCount:1}, {name: "thum
         res.status(500).send('Error signing up');
       }else if(results.length>0){
         const takenUser = new Error('the email is already taken');
-          res.status(409).send(takenUser);
+          res.status(409).send(takenUser.message);
       }
       else{
         connection.query(insertQuery, insertValues, (error, results) => {
