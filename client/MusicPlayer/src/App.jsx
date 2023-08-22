@@ -28,6 +28,7 @@ function App() {
         <Route path= '/user/:id' element={<User userID={userID}/>}>
         </Route>
         <Route path='/user/:id/delete' element={<Delete userID={userID}></Delete>}></Route>
+        <Route path="*" element={<h1>Not found</h1>} />
       </>
     )
   )

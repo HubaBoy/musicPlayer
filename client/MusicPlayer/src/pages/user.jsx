@@ -28,7 +28,7 @@ function User({userID})
         .then(response => {
             if(!response.ok)
             {
-                throw new Error('Error finding the user')
+                window.location.href = '/*';
             }
             return response.json()
         })
