@@ -23,7 +23,7 @@ const { Server } = require('http');
   }));
 
   app.get('/songs', (req, res) => {
-    const query = `select id, title from songs;`
+    const query = `select id, title, userName from songs;`
     connection.query(query, (error, results) => {
       if(error) {
         console.log(error)
@@ -233,7 +233,7 @@ app.post('/upload', upload.fields([{name: "songInput", maxCount:1}, {name: "thum
   })
 
   app.get('/songs/:user', (req,res) =>{
-    const query = `select id,title from songs where userID = ${req.params.user}`
+    const query = `select id,title, userName from songs where userID = ${req.params.user}`
     connection.query(query, (error, results) => {
       if(error)
       {
