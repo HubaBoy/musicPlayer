@@ -97,7 +97,23 @@ const { Server } = require('http');
           }
         })
   }})});
-  
+
+  app.get('/username/:id' , (req, res) => {
+    const query = `select userName from users where id = ${req.params.id}`
+    connection.query(query, (error , results) =>
+    {
+      if(error)
+      {
+        res.set(500).send("Error retrieving the user name")
+      }else if(results.length === 0)
+      {
+        res.send(404).send("UserName not found")
+     } else{
+      res.send(results)
+     }
+    })
+  })
+
     const storageEngine = multer.diskStorage({
       destination:(req,file, cb) =>{
         if(file.fieldname === 'songInput')
@@ -126,7 +142,7 @@ app.post('/upload', upload.fields([{name: "songInput", maxCount:1}, {name: "thum
   console.log(req.body.textInput)
   const thumbnailPath = req.files['thumbnailInput'] ? req.files['thumbnailInput'][0].path : null;
   console.log(thumbnailPath);
-  const insertQuery = `INSERT INTO songs (title, song, thumbnail, userId) VALUES (?, ?,?,?)`;
+  const insertQuery = `INSERT INTO songs (title, song, thumbnail, userI) VALUES (?, ?,?,?)`;
   const insertValues = [req.body.textInput ,req.files['songInput'][0].path, thumbnailPath, req.body.userID];
   console.log(req.body.userID)
   connection.query(insertQuery, insertValues, (error, results) => {
