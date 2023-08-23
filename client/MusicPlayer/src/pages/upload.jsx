@@ -4,6 +4,22 @@ function Upload({userID}) {
     const [textInput, setTextInput] = useState('');
     const [songInput, setSongInput] = useState(null);
     const [thumbnailInput, setThumbnailInput] = useState(null);
+    const [userName, setUserName] = useState('')
+
+   useEffect( () => {
+    fetch(`http://localhost:3000/username/${userID}`)
+    .then(response =>{ 
+      if(!response.ok)
+      {window.location.href = '/*';
+    }
+    return response.json()})
+    .then(data => {
+      console.log(data[0].userName)
+      setUserName(data[0].userName)
+    })
+    .catch(err => console.error(err))
+   } ,[])
+
     console.log(userID)
     const handleTextChange = (event) => {
       setTextInput(event.target.value);
@@ -46,6 +62,7 @@ function Upload({userID}) {
       formData.append('songInput', songInput);
       formData.append('thumbnailInput', thumbnailInput);
       formData.append('userID', userID.toString())
+      formData.append('userName', userName)
       try {
         const response = await fetch('http://localhost:3000/upload', {
           method: 'POST',

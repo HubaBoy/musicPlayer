@@ -142,8 +142,8 @@ app.post('/upload', upload.fields([{name: "songInput", maxCount:1}, {name: "thum
   console.log(req.body.textInput)
   const thumbnailPath = req.files['thumbnailInput'] ? req.files['thumbnailInput'][0].path : null;
   console.log(thumbnailPath);
-  const insertQuery = `INSERT INTO songs (title, song, thumbnail, userI) VALUES (?, ?,?,?)`;
-  const insertValues = [req.body.textInput ,req.files['songInput'][0].path, thumbnailPath, req.body.userID];
+  const insertQuery = `INSERT INTO songs (title, song, thumbnail, userId , userName) VALUES (?, ?,?,?, ?)`;
+  const insertValues = [req.body.textInput ,req.files['songInput'][0].path, thumbnailPath, req.body.userID, req.body.userName];
   console.log(req.body.userID)
   connection.query(insertQuery, insertValues, (error, results) => {
     if (error) {
