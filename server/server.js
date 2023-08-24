@@ -23,7 +23,7 @@ const { Server } = require('http');
   }));
 
   app.get('/songs', (req, res) => {
-    const query = `select id, title, userName from songs;`
+    const query = `select id, title, userName, userId from songs;`
     connection.query(query, (error, results) => {
       if(error) {
         console.log(error)
