@@ -38,6 +38,23 @@ const { Server } = require('http');
     })
 })
 
+app.get('/search/:search', (req, res) => {
+  const query = `select id, title, userName, userId from songs WHERE MATCH(title) AGAINST ('${req.params.search}*' IN BOOLEAN MODE);`
+  connection.query(query, (error, results) => {
+    if(error) {
+      console.log(error)
+      res.status(500).send('Error retrieving song')
+    }
+    else if (results.length === 0)
+    {
+    res.status(404).send('song not found');
+    }else{
+      const songs = results;
+      res.send(songs)
+    }
+  })
+})
+
 
   app.get('/thumbnail/:id', (req, res) => {
     const query = `SELECT thumbnail FROM songs WHERE id = ${req.params.id}`;
