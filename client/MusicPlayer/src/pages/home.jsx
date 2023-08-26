@@ -62,6 +62,7 @@ function Home({userID})
             <p>+</p>
         </div>
         </StyledLink>
+        <input type='text'></input>
         <Link to={`/user/${userID}`}>
         <img src={avatar === null ? avatar0 : avatar} alt='avatar'></img>
         </Link>
