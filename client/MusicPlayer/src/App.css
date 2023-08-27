@@ -76,6 +76,7 @@
   flex-flow: row wrap;
   padding-left: 5%;
   padding-bottom: 11dvh;
+  min-height: 69dvh;
 }
 
 .card{

@@ -14,6 +14,7 @@ import Upload from './pages/upload.jsx';
 import Home from './pages/home.jsx'
 import User from './pages/user.jsx'
 import Delete from './pages/delete.jsx'
+import Search from './pages/search.jsx'
 
 function App() {
   const [userID, setUserID] = useState(Cookies.get('userID') || 0);
@@ -26,6 +27,7 @@ function App() {
         <Route path= 'log-in' element={<LogIn userID={userID} setUserID={setUserID}/>}></Route>
         <Route path= '/user/:id' element={<User userID={userID}/>}>
         </Route>
+        <Route path='/search/:search' element={<Search userID={userID}></Search>}></Route>
         <Route path='/user/:id/delete' element={<Delete userID={userID}></Delete>}></Route>
         <Route path="*" element={<h1>Not found</h1>} />
       </>

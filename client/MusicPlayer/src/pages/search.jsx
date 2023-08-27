@@ -8,23 +8,26 @@ const StyledLink = styled(Link)`
 text-decoration: none;
 /* Add any other custom styles you want to apply to the Link here */
 `;
+import { useParams } from 'react-router-dom';
 
-function Home({userID})
+function Search({userID})
 {
   const [source, setSource] = useState('0');
   const [thumb, setThumb] = useState('');
   const [title, setTitle] = useState('');
   const [songs, setSongs] = useState([]);
   const [avatar, setAvatar] = useState(null);
+  let {search} = useParams()
   const [input, setInput] = useState('')
-
   if(userID===0)
   {
     window.location.href = '/log-in';
   }
 
+
   useEffect(() => {
-    fetch('http://localhost:3000/songs')
+    setInput(search);
+    fetch(`http://localhost:3000/search/${search}`)
       .then(response => {
         if (!response.ok) {
           throw new Error('Error retrieving songs');
@@ -55,21 +58,21 @@ function Home({userID})
         })
 }, [])
 
-const handleChange = (event) => {
-  setInput(event.target.value)
-  
-}
-
-const handleSubmit = (event) => {
-  event.preventDefault();
-  if(input === '')
-  {
-      window.location.href = `/`
+  const handleChange = (event) => {
+    setInput(event.target.value)
+    
   }
-  else{
-  console.log(input)
-  window.location.href = `/search/${input}`;
-}}
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if(input === '')
+    {
+        window.location.href = `/`
+    }
+    else{
+    console.log(input)
+    window.location.href = `/search/${input}`;
+  }}
 
   return (
     <>
@@ -80,7 +83,7 @@ const handleSubmit = (event) => {
         </div>
         </StyledLink>
        <form onSubmit={handleSubmit}>
-       <input type='text' onChange={handleChange}></input>
+       <input type='text'value={input} onChange={handleChange}></input>
        </form>
         <Link to={`/user/${userID}`}>
         <img src={avatar === null ? avatar0 : avatar} alt='avatar'></img>
@@ -111,4 +114,4 @@ const handleSubmit = (event) => {
 }
 
 
-export default Home
+export default Search
