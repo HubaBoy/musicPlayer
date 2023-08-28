@@ -1,5 +1,5 @@
 // main.js
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, globalShortcut, Menu } = require('electron');
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -7,12 +7,15 @@ function createWindow() {
     height: 600,
     webPreferences: {
       nodeIntegration: true, // This allows you to use Node.js modules in your renderer process.
+      autoHideMenuBar: true,
     },
   });
 
   // Load your React app (assuming it's built into a build folder)
   win.loadURL('http://localhost:5173');
+  win.setMenuBarVisibility(false)
 }
+
 
 app.whenReady().then(createWindow);
 
@@ -27,4 +30,7 @@ app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
+  globalShortcut.register('Control+Shift+I', ()=> {
+        return false;
+  })
 });
