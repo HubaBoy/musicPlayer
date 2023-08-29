@@ -1,4 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components'
+
+const StyledLink = styled(Link)`
+text-decoration: none;
+p{
+    zoom: 0.7;
+}
+/* Add any other custom styles you want to apply to the Link here */
+`;
 
 function Upload({userID}) {
     const [textInput, setTextInput] = useState('');
@@ -84,6 +94,13 @@ function Upload({userID}) {
   
     return (
       <>
+      <div className="top-nav">
+        <StyledLink to='/'>
+        <div className='upload-button'>
+            <p>🏠</p>
+        </div>
+        </StyledLink>
+        </div>
         <form encType="multipart/form-data" action="/upload" method="post" onSubmit={handleSubmit}>
           <input type="text" name="textInput" value={textInput} onChange={handleTextChange} />
           <input type="file" name="songInput" accept="audio/*" onChange={handleSongChange} />
