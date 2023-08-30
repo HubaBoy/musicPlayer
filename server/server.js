@@ -267,7 +267,7 @@ app.post('/upload', upload.fields([{name: "songInput", maxCount:1}, {name: "thum
       if (error) {
         console.error(error);
         res.status(500).send('Error retrieving the image path');
-      } else {
+      } else if(results[0].thumbnail !== null) {
         fs.unlink( results[0].thumbnail, (err) => {
           if (err) {
               throw err;
@@ -280,7 +280,7 @@ app.post('/upload', upload.fields([{name: "songInput", maxCount:1}, {name: "thum
     if (error) {
       console.error(error);
       res.status(500).send('Error retrieving the song path');
-    } else {
+    } else{
       fs.unlink( results[0].song, (err) => {
         if (err) {
             throw err;
