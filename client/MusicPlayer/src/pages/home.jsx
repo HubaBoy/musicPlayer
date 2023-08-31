@@ -8,6 +8,7 @@ const StyledLink = styled(Link)`
 text-decoration: none;
 /* Add any other custom styles you want to apply to the Link here */
 `;
+import AudioController from '../components/controller';
 
 function Home({userID})
 {
@@ -104,7 +105,7 @@ const handleSubmit = (event) => {
             <p>{title}</p>
           </div>
         )}
-        {source !== '0' && <audio src={source} controls />}
+        {source !== '0' && <AudioController song={source}></AudioController>}
       </div>
     </>
   )

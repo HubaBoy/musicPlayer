@@ -1,0 +1,34 @@
+.controller input {
+    width: 30dvw;
+}
+
+.controller p {
+    margin: 1dvh;
+}
+
+.controller {
+    display: flex;
+    flex-direction: row;
+}
+
+.audioController {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 2.25dvh;
+    position: relative; /* Add this to make positioning relative to .audioController */
+}
+
+.audioController button {
+    position: absolute;
+    margin: 0;
+    width: 2dvw;
+    height: 2dvw;
+    left: 50%;
+    transform: translateX(-50%);
+    top: -3.5dvh;
+    border-radius: 100%;
+    background-color: rgba(0, 0, 255, 0);
+    font-weight: bold;
+    font-size: 3dvh;
+}

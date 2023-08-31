@@ -9,6 +9,7 @@ text-decoration: none;
 /* Add any other custom styles you want to apply to the Link here */
 `;
 import { useParams } from 'react-router-dom';
+import AudioController from '../components/controller';
 
 function Search({userID})
 {
@@ -107,7 +108,7 @@ function Search({userID})
             <p>{title}</p>
           </div>
         )}
-        {source !== '0' && <audio src={source} controls />}
+        {source !== '0' && <AudioController song={source}></AudioController>}
       </div>
     </>
   )
