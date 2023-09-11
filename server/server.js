@@ -325,7 +325,7 @@ app.put('/avatar/:id', upload.fields([{name: "avatarInput", maxCount:1}]), (req,
         }else if(results.length === 0)
         {
           res.status(404).send('Avatar not found')
-        } else if(results.length > 0){
+        } else if(results[0].avatar){
           const avatarPath = results[0].avatar;
           console.log(avatarPath)
           {
