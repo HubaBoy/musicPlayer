@@ -4,9 +4,13 @@ import { StyleSheet } from 'react-native';
 
 const YourApp = () => {
   return (
+   <>
     <ScrollView contentContainerStyle={styles.topNav}>
-      {/* No content */}
     </ScrollView>
+    <ScrollView contentContainerStyle={styles.bottomNav}>
+      
+    </ScrollView>
+   </>
   );
 };
 
@@ -18,6 +22,15 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  bottomNav: {
+    position: 'absolute',
+    width: '100%',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 100,
+    backgroundColor: '#5ADBFF',
   },
 });
 
