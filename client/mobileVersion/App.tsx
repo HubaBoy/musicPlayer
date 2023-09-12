@@ -5,14 +5,17 @@ import { StyleSheet } from 'react-native';
 const YourApp = () => {
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.topNav} style={styles.scrollView}>
+      <View style={styles.topNav}>
         {/* TopNav Content */}
+      </View>
+      <ScrollView contentContainerStyle={styles.middleNav}>
+        <View style={styles.cardContainer}>
+         <View style={styles.card}></View>
+        </View>
       </ScrollView>
-      <ScrollView contentContainerStyle={styles.middleNav} style={styles.scrollView}>
-      </ScrollView>
-      <ScrollView contentContainerStyle={styles.bottomNav} style={styles.scrollView}>
+      <View style={styles.bottomNav}>
         {/* BottomNav Content */}
-      </ScrollView>
+      </View>
     </View>
   );
 };
@@ -21,11 +24,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  scrollView: {
-    margin: 0,
-  },
   topNav: {
-    position: 'absolute',
     height: 100,
     width: '100%',
     backgroundColor: 'black',
@@ -34,22 +33,33 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   bottomNav: {
-    position: 'absolute',
-    width: '100%',
-    marginBottom: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
     height: 100,
+    width: '100%',
     backgroundColor: '#5ADBFF',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   middleNav: {
-    backgroundColor: 'orange',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
     paddingLeft: '5%',
     paddingBottom: '11%',
-    minHeight: '69%',
+    backgroundColor: 'yellow',
+  },
+  cardContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+  },
+  card: {
+    height: 200,
+    width: 140,
+    backgroundColor: 'yellowgreen',
+    marginTop: 30,
+    marginLeft: 9,
+    marginRight: 35,
+    borderRadius: 20,
+    opacity: 0.93,
   },
 });
 
