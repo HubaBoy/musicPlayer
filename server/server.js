@@ -1,3 +1,4 @@
+require('dotenv').config();
 express = require('express')
 app = express();
 cors = require('cors');
@@ -9,6 +10,7 @@ bodyParser = require('body-parser')
 const connection = require('./db');
 const { query } = require('express');
 const { Server } = require('http');
+
 
   connection.connect();
 
@@ -67,6 +69,7 @@ app.get('/search/:search', (req, res) => {
       } else {
         const thumbnailPath = results[0].thumbnail; 
         if(thumbnailPath){
+          if(fs.existsSync){
           fs.readFile(thumbnailPath, (readError, thumbnailData) => {
             if (readError) {
               console.error(readError);
@@ -77,7 +80,7 @@ app.get('/search/:search', (req, res) => {
               res.send(thumbnailData);
             }
           });
-        }
+        }}
       }
     });
   });
@@ -106,6 +109,7 @@ app.get('/search/:search', (req, res) => {
             const stream = fs.createReadStream(songPath)
             stream.on('data', (chunkdata) => {
               res.write(chunkdata);
+              console.log(chunkdata);
             });
             stream.on('end', ()=>{
               res.end()
@@ -309,7 +313,11 @@ app.put('/avatar/:id', upload.fields([{name: "avatarInput", maxCount:1}]), (req,
         if(error)
         {
           res.status(500).send('Internal server error')
-        }else {
+        }
+        else if(results.length === 0){
+          res.status(404).send('song not found');
+        }
+        else {
           console.log('Avatar inserted successfully');
         }
       
@@ -325,7 +333,7 @@ app.put('/avatar/:id', upload.fields([{name: "avatarInput", maxCount:1}]), (req,
         }else if(results.length === 0)
         {
           res.status(404).send('Avatar not found')
-        } else if(results.length > 0){
+        } else if(results[0].avatar!== null){
           const avatarPath = results[0].avatar;
           console.log(avatarPath)
           {

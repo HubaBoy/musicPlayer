@@ -1,0 +1,24 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+npm run lint
+
+echo "🔍 Checking for real secrets..."
+
+if grep -r --binary-files=without-match \
+           --exclude-dir=node_modules \
+           --exclude-dir=.git \
+           --exclude-dir=.husky \
+           --exclude-dir=server/uploads \
+           --exclude="*.jpg" \
+           --exclude="*.png" \
+           --exclude="*.mp3" \
+           --exclude="*.wav" \
+           --exclude="*.jpeg" \
+           -E "([A-Za-z0-9_]*PASSWORD\\s*=\\s*['\"][^'\"]{6,}['\"])|([A-Za-z0-9_]*SECRET[A-Za-z0-9_]*\\s*=\\s*['\"][^'\"]{6,}['\"])|([A-Za-z0-9_]*API_KEY\\s*=\\s*['\"][^'\"]{10,}['\"])|SW\\.[A-Za-z0-9]" .; then
+
+  echo "❌ Real secret detected in code!"
+  exit 1
+fi
+
+echo "✅ No secrets found"

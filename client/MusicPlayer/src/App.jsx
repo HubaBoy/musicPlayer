@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 import './App.css';
 import {createBrowserRouter,
   createRoutesFromElements,
    Route,
-    Link,
-     Outlet,
       RouterProvider,
      } from 'react-router-dom'
 import SignUp from './pages/sing-up.jsx';

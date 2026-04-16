@@ -102,6 +102,7 @@
 }
 
 .card p{
+  margin-left: 0.3dvh;
   margin-top: 0.4dvh;
   font-size: 3.5dvh;
   font-weight: bold;

@@ -1,0 +1,39 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+jobs:
+  build-server:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build & Push Server
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/musicplayer-server:latest ./server/musicplayer
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/musicplayer-server:latest
+
+  build-client:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build & Push Client
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/musicplayer-client:latest ./client/musicplayer
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/musicplayer-client:latest
