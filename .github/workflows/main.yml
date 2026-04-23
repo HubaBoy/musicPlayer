@@ -6,66 +6,51 @@ on:
   pull_request:
 
 jobs:
-  build-server:
+  server:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      - name: Install dependencies (server)
-        run: |
-          cd server
-          npm install
+      - name: Install server deps
+        working-directory: server
+        run: npm install
 
-      - name: Run tests (server)
-        run: |
-          cd server
-          npm test
+      - name: Run server tests
+        working-directory: server
+        run: npm test
 
-      - name: Login Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build server Docker image
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/musicplayer-server:latest ./server
 
-      - name: Build & Push Server
-        run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/musicplayer-server:latest ./server
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/musicplayer-server:latest
+      - name: Push server Docker image
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/musicplayer-server:latest
 
-  build-client:
+
+  client:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      - name: Install dependencies (client)
-        run: |
-          cd client
-          npm install
+      - name: Install client deps
+        working-directory: client/MusicPlayer
+        run: npm install
 
-      - name: Build Client
-        run: |
-          cd client
-          npm run build
+      - name: Build client
+        working-directory: client/MusicPlayer
+        run: npm run build
 
-      - name: Login Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build client Docker image
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/musicplayer-client:latest ./client/MusicPlayer
 
-      - name: Build & Push Client
-        run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/musicplayer-client:latest ./client
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/musicplayer-client:latest
+      - name: Push client Docker image
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/musicplayer-client:latest
