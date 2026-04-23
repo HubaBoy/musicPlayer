@@ -5,15 +5,25 @@ import { defineConfig } from "eslint/config";
 
 export default defineConfig([
 
-  // ✅ Base JS rules
+  // ❌ GLOBAL IGNORE (ВАЖНО - ТУК!)
+  {
+    ignores: [
+      "**/dist/**",
+      "**/build/**",
+      "**/node_modules/**"
+    ],
+  },
+
   js.configs.recommended,
 
-  // 🌐 FRONTEND (React)
+  // 🌐 FRONTEND
   {
-    files: ["client/**/*.{js,jsx}", "**/*.{jsx}"],
+    files: ["client/**/*.{js,jsx}"],
+
     plugins: {
       react: pluginReact,
     },
+
     languageOptions: {
       globals: {
         ...globals.browser,
@@ -24,24 +34,27 @@ export default defineConfig([
         },
       },
     },
+
     rules: {
       "react/prop-types": "off",
       "no-unused-vars": "off",
-      "no-undef": "off"   // 🔥 HERE
+      "no-undef": "off",
     },
   },
 
-  // 🟢 BACKEND (Node / Electron / server)
+  // 🟢 BACKEND (ако го lint-ваш)
   {
-    files: ["server/**/*.js", "main.js"],
+    files: ["server/**/*.js"],
+
     languageOptions: {
       globals: {
         ...globals.node,
       },
     },
+
     rules: {
       "no-unused-vars": "off",
-      "no-undef": "off"
+      "no-undef": "off",
     },
   },
 ]);
